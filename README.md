@@ -1,5 +1,9 @@
 # Trilogia Inova UNCISAL
 
+<p align="center">
+  <img src="capas.png" alt="As três capas da trilogia em estilo xilogravura: O Curativo de Rita, Joana, a Palmilha e O Curativo Chega ao SUS" width="420">
+</p>
+
 Inovação em versos de cordel. Três folhetos do Núcleo de Inovação Tecnológica da Universidade Estadual de Ciências da Saúde de Alagoas (NIT UNCISAL) para pesquisadores e estudantes: como proteger uma ideia, transformá-la em negócio e fazê-la chegar ao paciente do SUS.
 
 ## Os folhetos
