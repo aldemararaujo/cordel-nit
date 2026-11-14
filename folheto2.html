@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joana, a Palmilha: folheto de cordel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bitter:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#1a1714;
+  --miolo:#FCFBF7;
+  --capa:#EFC6BC;
+  --mesa:#2e2925;
+  --ui:#efe7d6;
+  --ui-fraco:#cfc5b2;
+  --textura:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.30  0 0 0 0 0.24  0 0 0 0 0.15  0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--mesa);color:var(--ui);font-family:'Bitter',Georgia,serif;display:flex;flex-direction:column;overflow:hidden}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topo{position:relative;padding:10px 16px 4px;text-align:center;line-height:1.3}
+.voltar{position:absolute;left:12px;top:8px;display:inline-flex;align-items:center;min-height:32px;color:var(--ui-fraco);font-size:13px;text-decoration:none}
+.voltar:hover{color:var(--ui);text-decoration:underline}
+@media (max-width:520px){.topo{padding-top:34px}}
+.topo h1{margin:0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:17px;letter-spacing:.02em}
+.topo p{margin:2px 0 0;font-size:12.5px;color:var(--ui-fraco)}
+
+#palco{flex:1;position:relative;overflow:hidden;min-height:0}
+#escala{position:absolute;left:50%;top:50%;transform-origin:center center}
+.livro{position:relative;height:794px;perspective:2600px}
+.vaga{position:absolute;top:0;width:559px;height:794px}
+.livro.dupla{width:1118px}
+.livro.dupla .vaga.esq{left:0}
+.livro.dupla .vaga.dir{left:559px}
+.livro.simples{width:559px}
+.livro.simples .vaga.esq{display:none}
+.livro.simples .vaga.dir{left:0}
+
+.pagina{position:absolute;inset:0;overflow:hidden;color:var(--tinta);background-color:var(--miolo);background-image:var(--textura);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.pagina.em-branco{background:transparent;box-shadow:none}
+.pagina.capa-cor{background-color:var(--capa)}
+.pagina.lado-esq::after,.pagina.lado-dir::after{content:"";position:absolute;top:0;bottom:0;width:46px;pointer-events:none}
+.pagina.lado-esq::after{right:0;background:linear-gradient(to left,rgba(0,0,0,.20),rgba(0,0,0,0))}
+.pagina.lado-dir::after{left:0;background:linear-gradient(to right,rgba(0,0,0,.20),rgba(0,0,0,0))}
+
+.folha{position:absolute;top:0;width:559px;height:794px;transform-style:preserve-3d;z-index:5}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face.verso{transform:rotateY(180deg)}
+.sombra{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,rgba(0,0,0,.28),rgba(0,0,0,.05));opacity:0}
+
+/* Capa */
+.capa{width:559px;height:794px;padding:32px;font-family:'Bitter',Georgia,serif}
+.capa-moldura{width:100%;height:100%;border:3px solid var(--tinta);padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:14px}
+.capa-topo{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%}
+.selo{margin:0;width:100%;padding:5px 0;border-top:2px solid var(--tinta);border-bottom:2px solid var(--tinta);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;text-align:center}
+.capa h2{margin:6px 0 0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:42px;line-height:1.04;text-align:center;text-wrap:balance}
+.capa .subt{margin:0;font-family:'Alfa Slab One',Georgia,serif;font-size:21px;line-height:1.18;text-align:center;text-wrap:balance}
+.capa-pe{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%}
+.capa-autor{margin:0;font-size:17px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+.capa-rodape{margin:0;width:100%;padding-top:6px;border-top:2px solid var(--tinta);font-size:12px;letter-spacing:.06em;text-align:center}
+
+/* Miolo */
+.miolo{position:absolute;inset:0;padding:60px 48px 40px;display:flex;flex-direction:column}
+.abertura{text-align:center;padding-bottom:16px;margin-bottom:26px;border-bottom:2px solid var(--tinta)}
+.abertura h2{margin:0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:32px;line-height:1.08}
+.abertura .subt{margin:6px 0 0;font-family:'Alfa Slab One',Georgia,serif;font-size:17px;line-height:1.2}
+.abertura .autor{margin:10px 0 0;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.estrofes{flex:1;display:flex;flex-direction:column;align-items:center;gap:30px}
+.estrofe{margin:0;width:330px;font-family:'Crimson Pro',Georgia,serif;font-size:20px;line-height:1.45}
+.estrofe b{font-weight:600;font-size:1.08em}
+.folio{text-align:center;font-size:14px;letter-spacing:.1em;display:flex;align-items:center;justify-content:center;gap:12px}
+.folio::before,.folio::after{content:"";width:28px;height:1.5px;background:var(--tinta)}
+.fim{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:6px}
+.fim span{font-family:'Alfa Slab One',Georgia,serif;font-size:26px;letter-spacing:.3em;padding-left:.3em}
+
+/* Páginas de complemento */
+.texto{position:absolute;inset:0;padding:56px 52px 40px;display:flex;flex-direction:column;font-family:'Bitter',Georgia,serif}
+.texto h2{margin:0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:28px;text-align:center}
+.texto .subt{margin:4px 0 18px;text-align:center;font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding-bottom:12px;border-bottom:2px solid var(--tinta)}
+.texto p{margin:0 0 10px;font-size:15px;line-height:1.5}
+.texto ul{margin:0 0 14px;padding-left:18px}
+.texto li{font-size:14.5px;line-height:1.45;margin-bottom:7px}
+.regra{border:2px solid var(--tinta);padding:10px 14px;margin:6px 0 12px;text-align:center}
+.regra p{margin:0;font-size:15.5px}
+.nota{font-size:13px !important;font-style:italic}
+.glossario{margin:0;flex:1}
+.glossario dt{font-weight:700;font-size:15px;margin-top:10px}
+.glossario dd{margin:2px 0 0;font-size:14.5px;line-height:1.42}
+.empurra{flex:1}
+
+/* Contracapa */
+.contra{position:absolute;inset:0;padding:32px}
+.contra-moldura{width:100%;height:100%;border:3px solid var(--tinta);padding:30px 30px 22px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.contra h2{margin:4px 0 0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:24px}
+.contra ol{margin:0;padding:0;list-style:none;width:100%;display:flex;flex-direction:column;gap:10px}
+.contra li{font-size:15px;line-height:1.35;padding:9px 10px;border:1.5px solid var(--tinta)}
+.contra li.atual{background:var(--tinta);color:var(--capa)}
+.contra li small{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+.contra .nit{margin:0;font-size:15px;line-height:1.55}
+.contra .nit strong{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:20px;letter-spacing:.04em}
+.contra .credito{margin:0;font-size:12.5px;line-height:1.5;padding-top:10px;border-top:2px solid var(--tinta);width:100%}
+.pagina a{color:var(--tinta);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.pagina a:hover{text-decoration-thickness:2.5px}
+.pagina a:focus-visible{outline:3px solid var(--tinta);outline-offset:2px}
+.contra li a{text-decoration:none;display:block}
+.contra li a:hover{text-decoration:underline}
+.interna{position:absolute;inset:0;padding:32px}
+.interna-moldura{width:100%;height:100%;border:3px solid var(--tinta);padding:30px 34px 24px;display:flex;flex-direction:column}
+.interna h2{margin:0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:26px;text-align:center}
+.interna .subt{margin:4px 0 16px;text-align:center;font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding-bottom:12px;border-bottom:2px solid var(--tinta)}
+.interna p{margin:0 0 11px;font-size:15px;line-height:1.52}
+.interna h3{margin:12px 0 6px;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:17px}
+.interna ul{margin:0 0 6px;padding-left:18px}
+.interna li{font-size:14.2px;line-height:1.42;margin-bottom:5px}
+.assina{text-align:right;font-style:italic;font-size:14px !important;margin-top:4px !important}
+.rosto{position:absolute;inset:0;padding:70px 56px 56px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.rosto .selo{width:auto;padding:5px 18px}
+.rosto h2{margin:56px 0 0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:38px;line-height:1.06}
+.rosto .subt{margin:10px 0 0;font-family:'Alfa Slab One',Georgia,serif;font-size:20px;line-height:1.2}
+.rosto .autor{margin:40px 0 0;font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.rosto .serie{margin:12px 0 0;font-size:14px}
+.rosto .imprenta{margin:0;font-size:14.5px;line-height:1.6;padding-top:12px;border-top:2px solid var(--tinta);width:100%}
+.ficha{margin:0 0 6px;display:grid;grid-template-columns:132px minmax(0,1fr);row-gap:7px;column-gap:12px}
+.ficha dt{font-weight:700;font-size:14px}
+.ficha dd{margin:0;font-size:14px;line-height:1.4}
+.citar{border:1.5px solid var(--tinta);padding:10px 12px;font-size:13.5px !important;line-height:1.5 !important}
+
+/* Controles */
+.controles{display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 12px 12px;flex-wrap:wrap}
+.controles button,.controles select{font-family:'Bitter',Georgia,serif;font-size:15px;color:var(--ui);background:#453d36;border:1px solid #6b5f53;border-radius:8px;min-height:44px}
+.controles button{display:inline-flex;align-items:center;gap:6px;padding:0 16px;cursor:pointer}
+.controles button:hover:not(:disabled){background:#574c43}
+.controles button:disabled{opacity:.4;cursor:default}
+.controles button:focus-visible,.controles select:focus-visible{outline:3px solid #F2DE8C;outline-offset:2px}
+.controles select{padding:0 10px}
+#indicador{min-width:150px;text-align:center;font-size:14px;color:var(--ui)}
+/* Declamação */
+.estrofe{transition:background-color .25s ease, box-shadow .25s ease}
+.estrofe.lendo{background:rgba(242,222,140,.5);box-shadow:0 0 0 10px rgba(242,222,140,.5);border-radius:2px}
+.estrofe .v.atual{text-decoration:underline;text-decoration-color:#9a6b00;text-decoration-thickness:2px;text-underline-offset:4px}
+.declamar{display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 12px 0;flex-wrap:wrap}
+.declamar[hidden]{display:none}
+.declamar button,.declamar select{font-family:'Bitter',Georgia,serif;font-size:14.5px;color:var(--ui);background:#3a332d;border:1px solid #6b5f53;border-radius:8px;min-height:44px}
+.declamar button{display:inline-flex;align-items:center;gap:6px;padding:0 14px;cursor:pointer}
+.declamar button:hover:not(:disabled){background:#4c433b}
+.declamar button:disabled{opacity:.4;cursor:default}
+.declamar button[hidden]{display:none}
+.declamar button:focus-visible,.declamar select:focus-visible{outline:3px solid #F2DE8C;outline-offset:2px}
+.declamar select{padding:0 8px}
+#pararVoz{background:#F2DE8C;color:#1a1714;border-color:#F2DE8C}
+#pararVoz:hover{background:#f7e7a6}
+.chip{font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:1px solid #cfc5b2;border-radius:999px;padding:4px 10px;color:var(--ui-fraco)}
+.chip[hidden]{display:none}
+.nota-voz{margin:6px 16px 0;text-align:center;font-size:13px;color:var(--ui-fraco)}
+.nota-voz[hidden]{display:none}
+@keyframes pulsa{0%{box-shadow:0 0 0 0 rgba(242,222,140,.75)}70%{box-shadow:0 0 0 12px rgba(242,222,140,0)}100%{box-shadow:0 0 0 0 rgba(242,222,140,0)}}
+.declamar button.pulsa{background:#F2DE8C;color:#1a1714;border-color:#F2DE8C;animation:pulsa 1.6s ease-out infinite}
+@media (prefers-reduced-motion: reduce){.declamar button.pulsa{animation:none}}
+@media (max-width:520px){
+  .so-largo{display:none}
+  .declamar{gap:6px;padding:6px 12px 0}
+  .declamar button{padding:0 12px}
+  .controles{flex-wrap:nowrap;gap:8px;padding:6px 12px 14px;max-width:440px;width:100%;margin:0 auto}
+  .controles button span{display:none}
+  .controles button{flex:0 0 48px;width:48px;height:48px;padding:0;justify-content:center}
+  .controles select{flex:1 1 auto;min-width:0;height:48px;font-size:16px;text-align:center;text-align-last:center}
+  #indicador{display:none}
+  .topo p{display:none}
+}
+</style>
+</head>
+<body>
+<header class="topo">
+  <a class="voltar" href="index.html">&#8249; Trilogia Inova UNCISAL</a>
+  <h1>Joana, a Palmilha</h1>
+  <p>Trilogia Inova UNCISAL · Folheto 2 de 3 · Toque nas páginas, deslize ou use as setas para virar</p>
+</header>
+<main id="palco" aria-label="Folheto de cordel">
+  <div id="escala">
+    <div id="livro" class="livro dupla">
+      <div class="vaga esq" id="vagaEsq"></div>
+      <div class="vaga dir" id="vagaDir"></div>
+    </div>
+  </div>
+</main>
+<div class="declamar" id="declamar" role="group" aria-label="Declamação" hidden>
+  <button type="button" id="ouvirPag"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg><span><span class="so-largo">Ouvir </span>página</span></button>
+  <button type="button" id="ouvirTudo"><svg width="18" height="16" viewBox="0 0 30 24" fill="currentColor" aria-hidden="true"><path d="M3 4.5v15l11-7.5z M15 4.5v15l11-7.5z"/></svg><span><span class="so-largo">Ouvir </span>folheto</span></button>
+  <button type="button" id="pararVoz" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/></svg><span>Parar</span></button>
+  <label for="veloc" class="sr-only">Velocidade da declamação</label>
+  <select id="veloc"><option value="0.8">Lenta</option><option value="0.92" selected>Normal</option><option value="1.05">Rápida</option></select>
+  <span class="chip" id="chipVoz" hidden>Voz sintética</span>
+</div>
+<p class="nota-voz" id="semVoz" hidden></p>
+<nav class="controles" aria-label="Navegação do folheto">
+  <button type="button" id="ant" aria-label="Página anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Anterior</span></button>
+  <span id="indicador">Capa</span>
+  <label for="ir" class="sr-only">Ir para a página</label>
+  <select id="ir"></select>
+  <button type="button" id="prox" aria-label="Próxima página"><span>Próxima</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+</nav>
+<div id="aviso" class="sr-only" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var TITULO = "Joana, a Palmilha";
+var SUBTITULO = "e o Caminho do Empreendedor";
+var AUTOR = "Aldemar Araujo Castro";
+var NUM_FOLHETO = 2;
+var TITULO_FALA = "Joana, a Palmilha e o Caminho do Empreendedor. De Aldemar Araujo Castro.";
+var SVG_CAPA = "<svg width=\"449\" height=\"355\" viewBox=\"0 0 480 380\" role=\"img\" aria-label=\"Xilogravura: uma planta brota de um livro aberto; Joana caminha com uma maleta rumo a um prédio de parque tecnológico, sob o sol nascente\" style=\"display: block; flex-shrink: 0\"><rect x=\"0\" y=\"0\" width=\"480\" height=\"380\" fill=\"#EFC6BC\"></rect><g transform=\"translate(250 66)\"><path d=\"M38 0 L56 0 M32.9 19 L48.5 28 M19 32.9 L28 48.5 M0 38 L0 56 M-19 32.9 L-28 48.5 M-32.9 19 L-48.5 28 M-38 0 L-56 0 M-32.9 -19 L-48.5 -28 M-19 -32.9 L-28 -48.5 M0 -38 L0 -56 M19 -32.9 L28 -48.5 M32.9 -19 L48.5 -28\" stroke=\"#1a1714\" stroke-width=\"7\" fill=\"none\"></path><circle cx=\"0\" cy=\"0\" r=\"30\" fill=\"#1a1714\"></circle><circle cx=\"0\" cy=\"0\" r=\"19\" fill=\"none\" stroke=\"#EFC6BC\" stroke-width=\"3\"></circle><circle cx=\"0\" cy=\"0\" r=\"8\" fill=\"none\" stroke=\"#EFC6BC\" stroke-width=\"3\"></circle></g><path d=\"M336 44 q8 -9 16 0 q8 -9 16 0 M52 54 q6 -7 12 0 q6 -7 12 0\" fill=\"none\" stroke=\"#1a1714\" stroke-width=\"3\" stroke-linecap=\"round\"></path><rect x=\"360\" y=\"152\" width=\"100\" height=\"150\" fill=\"#1a1714\"></rect><rect x=\"396\" y=\"112\" width=\"28\" height=\"42\" fill=\"#1a1714\"></rect><path d=\"M410 112 L410 88\" stroke=\"#1a1714\" stroke-width=\"4\"></path><rect x=\"372\" y=\"166\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"403\" y=\"166\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"434\" y=\"166\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"372\" y=\"194\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"403\" y=\"194\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"434\" y=\"194\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"372\" y=\"222\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"403\" y=\"222\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"434\" y=\"222\" width=\"14\" height=\"14\" fill=\"#EFC6BC\"></rect><rect x=\"398\" y=\"262\" width=\"24\" height=\"40\" fill=\"#EFC6BC\"></rect><path d=\"M0 300 Q60 288 120 298 T240 296 T360 300 T480 292 L480 380 L0 380 Z\" fill=\"#1a1714\"></path><path d=\"M60 372 C180 340 300 330 410 302\" fill=\"none\" stroke=\"#EFC6BC\" stroke-width=\"7\" stroke-linecap=\"round\"></path><path d=\"M20 322 l30 0 M140 318 l26 0 M262 352 l30 0 M392 330 l30 0 M432 352 l30 0 M30 352 l20 0 M340 362 l34 0\" stroke=\"#EFC6BC\" stroke-width=\"2.5\" stroke-linecap=\"round\"></path><path d=\"M130 268 C128 220 136 180 130 122\" fill=\"none\" stroke=\"#1a1714\" stroke-width=\"8\"></path><path d=\"M130 200 C100 190 80 170 78 150 C100 152 122 170 130 200 Z\" fill=\"#1a1714\"></path><path d=\"M131 170 C160 160 178 140 180 118 C156 120 136 140 131 170 Z\" fill=\"#1a1714\"></path><path d=\"M130 124 C118 110 120 92 130 84 C140 92 142 110 130 124 Z\" fill=\"#1a1714\"></path><path d=\"M127 196 Q102 178 86 156 M134 166 Q158 148 174 124 M130 118 L130 94\" fill=\"none\" stroke=\"#EFC6BC\" stroke-width=\"2\"></path><path d=\"M130 302 L58 290 L58 254 L130 267 Z\" fill=\"#1a1714\"></path><path d=\"M130 302 L202 290 L202 254 L130 267 Z\" fill=\"#1a1714\"></path><path d=\"M68 266 L122 276 M68 276 L122 286 M138 276 L192 266 M138 286 L192 276\" stroke=\"#EFC6BC\" stroke-width=\"2.5\"></path><g transform=\"translate(270 300)\"><path d=\"M-12 -124 Q-30 -108 -38 -92\" fill=\"none\" stroke=\"#1a1714\" stroke-width=\"9\" stroke-linecap=\"round\"></path><path d=\"M-6 -48 L-18 -6 M6 -48 L20 -6\" fill=\"none\" stroke=\"#1a1714\" stroke-width=\"9\" stroke-linecap=\"round\"></path><ellipse cx=\"-20\" cy=\"-3\" rx=\"9\" ry=\"4\" fill=\"#1a1714\"></ellipse><ellipse cx=\"23\" cy=\"-3\" rx=\"9\" ry=\"4\" fill=\"#1a1714\"></ellipse><path d=\"M-16 -132 L16 -132 L36 -46 L-36 -46 Z\" fill=\"#1a1714\"></path><path d=\"M-14 -112 L14 -112 M-19 -96 L19 -96 M-24 -80 L24 -80 M-29 -64 L29 -64\" fill=\"none\" stroke=\"#EFC6BC\" stroke-width=\"2.5\"></path><path d=\"M12 -124 Q30 -102 34 -86\" fill=\"none\" stroke=\"#1a1714\" stroke-width=\"9\" stroke-linecap=\"round\"></path><rect x=\"24\" y=\"-86\" width=\"36\" height=\"26\" rx=\"3\" fill=\"#1a1714\"></rect><path d=\"M34 -86 L34 -93 L50 -93 L50 -86\" fill=\"none\" stroke=\"#1a1714\" stroke-width=\"4\"></path><path d=\"M27 -74 L57 -74\" stroke=\"#EFC6BC\" stroke-width=\"2.5\"></path><rect x=\"-4\" y=\"-140\" width=\"8\" height=\"10\" fill=\"#1a1714\"></rect><circle cx=\"0\" cy=\"-152\" r=\"16\" fill=\"#1a1714\"></circle><ellipse cx=\"-19\" cy=\"-150\" rx=\"6\" ry=\"11\" fill=\"#1a1714\"></ellipse><path d=\"M5 -155 l6 0 M6 -145 l6 -1\" stroke=\"#EFC6BC\" stroke-width=\"2\" stroke-linecap=\"round\"></path></g><rect x=\"3\" y=\"3\" width=\"474\" height=\"374\" fill=\"none\" stroke=\"#1a1714\" stroke-width=\"6\"></rect></svg>";
+
+var E = [null,
+"Volto de novo ao terreiro\ntrazendo a viola afinada\npra cantar mais uma história\nde gente determinada,\nque sai da universidade\ncom a ideia transformada.",
+"Se no folheto passado\nfalei de guardar invento,\nagora conto o caminho\nde quem vende o seu talento\ne transforma a sala de aula\num lugar de crescimento.",
+"Joana, da UNCISAL,\nestudava Medicina\ne via no ambulatório\na fila que não termina.\nPensava: “Deve haver jeito\nde mudar essa rotina”.",
+"Uma professora antiga\nlhe falou: “Menina, escuta:\na escola de hoje em dia\ntem mais uma nova luta:\ntransformar o que se aprende\nem fruto pra quem labuta”.",
+"O tripé que a gente ensina,\npesquisa, ensino e extensão,\nganhou mais uma tarefa\nque se chama inovação:\nlevar o saber pra rua\ne melhorar a nação.",
+"Escola, empresa e governo\nsão três fios de uma trança,\nchamada hélice tríplice,\ne juntas trazem mudança:\nquando a ideia vira empresa,\no povo ganha esperança.",
+"Empreender não é só\nabrir firma e ter balcão:\né coragem e atitude\npra resolver a questão;\npode ser dentro do emprego\nou social, de coração.",
+"Joana quis começar,\ne a professora indicou\numa tal de empresa júnior,\nonde muito aluno entrou\ne na prática aprendeu\ntudo o que a sala ensinou.",
+"Associação civil\ngerida por estudante\nque esteja na graduação,\ncom um docente atuante;\ne o que lucra no trabalho\nvolta pra ela, constante.",
+"Ninguém lá tira dinheiro,\no trabalho é voluntário;\nnem pode fazer política\npartidária, é necessário\nque o foco seja aprender\nnesse ambiente solidário.",
+"Serviço ligado ao curso\né tudo que vai ofertar;\ne a própria instituição\ncede o espaço sem cobrar;\ne o conselho faz as regras\nouvindo a júnior falar.",
+"Na UNCISAL a semente\nainda está germinando:\ncada curso pode ter\nsua júnior trabalhando,\nconsultoria em saúde\ne o futuro preparando.",
+"Joana entrou numa júnior,\naprendeu a negociar,\nplanejou, fez orçamento\ne cliente a conquistar,\naté que uma ideia nova\ncomeçou a lhe chamar.",
+"Palmilha que dá aviso\nantes de a vovó cair,\ncom sensor e aplicativo\npra família acudir;\nmas pra virar um negócio\nela não sabia aonde ir.",
+"Foi então que a incubadora\nabriu a porta pra ela:\nestrutura que dá apoio,\ngestão, técnica e cautela\na quem empreende e inova\ncrescer firme e sem sequela.",
+"Tem a pré-incubação\npra testar se a ideia é boa,\nse o cliente quer comprar\nou se é sonho que só voa;\nvalida o modelo e a dor\nantes de gastar à toa.",
+"Depois vem a incubação,\ncom mentoria e espaço,\nlaboratório, contato,\ninvestidor, passo a passo;\ne madura, se gradua\ne segue com seu próprio braço.",
+"A startup, a lei explica,\né empresa que inda começa:\naté dez anos de vida\ne um teto que se conheça,\ndezesseis milhões por ano\nna receita, que obedeça.",
+"Quando a firma cresce mais\ne precisa de lugar\nonde a pesquisa e o mercado\npossam juntos conversar,\nhá o parque tecnológico,\nque vai a firma abrigar.",
+"É complexo planejado\nde negócio e de ciência,\nque junta universidade\nàs firmas, em convivência,\npromovendo a sinergia\ne inovação por essência.",
+"No bairro do Jaraguá\ntem Centro de Inovação\nlá do Polo Tecnológico,\nque cresce em ampliação;\nlá o NIT tem sua sala\npra quem traz uma invenção.",
+"No parque, a empresa encontra\nvizinho a cooperar,\nlaboratório e parceiro\ne investidor pra apostar;\na ICT compartilha\nequipamento e lugar.",
+"E no meio da jornada\no NIT segue companheiro:\nprotege a ideia e o produto,\ncuida da marca primeiro,\nlicencia a tecnologia\ne ajuda a buscar dinheiro.",
+"Até professor que inventa\ntambém pode empresa abrir:\na lei lhe dá uma licença,\nsem salário, pra seguir\npor três anos, renováveis,\npara inovar e servir.",
+"E Joana, já formada,\ncom a empresa graduada,\nmudou-se pro Jaraguá,\ne a palmilha foi lançada:\nhoje a vovó anda firme\ne a família sossegada.",
+"Estudante que empreende\nnão espera só o diploma:\nfaz da escola uma oficina\ne ao conhecimento soma,\ntransforma a dor em produto\ne o desafio, ele doma.",
+"Ideia sem ação é nada,\nna gaveta a cochilar;\no que muda é o projeto\nvivo, pronto a decolar.\nAjuntando a turma toda,\nunião pra transformar.",
+"Na UNCISAL tem caminho\ncom gente boa e valente,\nincubando a ideia nova,\nseguindo sempre pra frente.\nAqui termina o folheto:\nluta, que o mundo é da gente!"
+];
+
+var LINKS = ["folheto1.html", "folheto2.html", "folheto3.html"];
+var DATA = "novembro de 2026";
+var SITE = "https://nit.uncisal.edu.br";
+var EMAIL = "nit@uncisal.edu.br";
+
+/* Capa: 4 páginas em papel colorido. Miolo: 12 páginas em papel branco, 3 estrofes por página;
+   a página 2 abre com o título e 2 estrofes; o acróstico tem página própria. */
+var MIOLO = [];
+MIOLO.push({tipo:"rosto"});
+MIOLO.push({tipo:"versos", estrofes:[1,2], abertura:true});
+for (var k = 3; k <= 24; k += 3) { MIOLO.push({tipo:"versos", estrofes:[k, k + 1, k + 2]}); }
+MIOLO.push({tipo:"versos", estrofes:[27,28], acrostico:true, fim:true});
+MIOLO.push({tipo:"apendice"});
+
+var PAGINAS = {};
+PAGINAS[1] = {tipo:"capa", cor:true};
+PAGINAS[2] = {tipo:"capaInterna", cor:true};
+MIOLO.forEach(function(c, idx){ c.m = idx + 1; PAGINAS[idx + 3] = c; });
+var N = MIOLO.length + 4;
+PAGINAS[N - 1] = {tipo:"contraInterna", cor:true};
+PAGINAS[N] = {tipo:"contracapa", cor:true};
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function sol(tam){
+  return '<svg width="'+tam+'" height="'+tam+'" viewBox="-60 -60 120 120" aria-hidden="true"><path d="M38 0 L56 0 M32.9 19 L48.5 28 M19 32.9 L28 48.5 M0 38 L0 56 M-19 32.9 L-28 48.5 M-32.9 19 L-48.5 28 M-38 0 L-56 0 M-32.9 -19 L-48.5 -28 M-19 -32.9 L-28 -48.5 M0 -38 L0 -56 M19 -32.9 L28 -48.5 M32.9 -19 L48.5 -28" stroke="#1a1714" stroke-width="7" fill="none"></path><circle r="30" fill="#1a1714"></circle><circle r="19" fill="none" stroke="currentColor" stroke-width="3"></circle><circle r="8" fill="none" stroke="currentColor" stroke-width="3"></circle></svg>';
+}
+
+function htmlCapa(){
+  return '<div class="capa"><div class="capa-moldura">'+
+  '<div class="capa-topo"><p class="selo">Literatura de Cordel</p><h2>'+TITULO+'</h2><p class="subt">'+SUBTITULO+'</p></div>'+
+  SVG_CAPA+
+  '<div class="capa-pe"><p class="capa-autor">'+AUTOR+'</p><p class="capa-rodape">NIT UNCISAL · Trilogia Inova UNCISAL · Folheto '+NUM_FOLHETO+' de 3</p></div>'+
+  '</div></div>';
+}
+
+function htmlEstrofe(i, acrostico){
+  var linhas = E[i].split("\n").map(function(l, li){
+    var t = esc(l);
+    if (acrostico) { t = "<b>" + t.charAt(0) + "</b>" + t.slice(1); }
+    return '<span class="v" data-l="' + li + '">' + t + '</span>';
+  });
+  return '<p class="estrofe" data-e="' + i + '">' + linhas.join("<br>") + '</p>';
+}
+
+function htmlVersos(n, cfg){
+  var h = '<div class="miolo">';
+  if (cfg.abertura) {
+    h += '<div class="abertura"><h2>'+TITULO+'</h2><p class="subt">'+SUBTITULO+'</p><p class="autor">'+AUTOR+'</p></div>';
+  }
+  h += '<div class="estrofes">';
+  cfg.estrofes.forEach(function(i){ h += htmlEstrofe(i, cfg.acrostico); });
+  if (cfg.fim) { h += '<div class="fim" style="color:var(--miolo)">'+sol(54)+'<span style="color:var(--tinta)">FIM</span></div>'; }
+  h += '</div><div class="folio">'+cfg.m+'</div></div>';
+  return h;
+}
+
+function htmlRosto(){
+  return '<div class="rosto"><p class="selo">Literatura de Cordel</p>'+
+  '<h2>'+TITULO+'</h2><p class="subt">'+SUBTITULO+'</p>'+
+  '<p class="autor">'+AUTOR+'</p>'+
+  '<p class="serie">Trilogia Inova UNCISAL · Folheto 2 de 3</p>'+
+  '<div class="empurra"></div>'+
+  '<p class="imprenta">Núcleo de Inovação Tecnológica da UNCISAL<br>Maceió, '+DATA+'</p></div>';
+}
+
+function linhasFicha(compacta){
+  return '<dl class="ficha">'+
+  (compacta ? '' : '<dt>Título</dt><dd>'+TITULO+' '+SUBTITULO+'</dd>')+
+  '<dt>Série</dt><dd>Trilogia Inova UNCISAL, folheto 2 de 3</dd>'+
+  '<dt>Texto</dt><dd>'+AUTOR+'</dd>'+
+  '<dt>Forma</dt><dd>28 sextilhas em redondilha maior, com acróstico final</dd>'+
+  (compacta ? '' : '<dt>Capa</dt><dd>Ilustração digital em estilo xilogravura</dd>')+
+  '<dt>Edição</dt><dd>NIT UNCISAL</dd>'+
+  '<dt>Local e data</dt><dd>Maceió, '+DATA+'</dd>'+
+  '<dt>Distribuição</dt><dd>Gratuita</dd>'+
+  '</dl>';
+}
+
+function htmlCitar(){
+  return '<p class="citar">CASTRO, Aldemar Araujo. <strong>Joana, a palmilha e o caminho do empreendedor</strong>. Maceió: NIT UNCISAL, 2026. Folheto de cordel. (Trilogia Inova UNCISAL, 2).</p>';
+}
+
+function htmlFicha(m){
+  return '<div class="texto"><h2>Ficha técnica</h2><p class="subt">Sobre este folheto</p>'+
+  linhasFicha(false)+
+  '<p style="margin-top:10px"><strong>Como citar</strong></p>'+ htmlCitar()+
+  '<div class="empurra"></div>'+
+  '<p class="nota">O uso de inteligência artificial na produção deste folheto está descrito na contracapa interna.</p>'+
+  '<div class="folio">'+m+'</div></div>';
+}
+
+function htmlCapaInterna(){
+  return '<div class="interna"><div class="interna-moldura">'+
+  '<h2>Por que esta série</h2><p class="subt">Trilogia Inova UNCISAL</p>'+
+  '<p>A universidade produz conhecimento todos os dias, mas boa parte dele não chega a quem precisa. Às vezes falta proteção, e a ideia se perde antes de virar produto; às vezes falta caminho, e a invenção fica na gaveta. A Trilogia Inova UNCISAL nasceu para encurtar essa distância.</p>'+
+  '<p>Escolhemos o cordel porque ele sempre foi, no Nordeste, jornal, escola e conversa de feira. A métrica ajuda a memorizar, a rima aproxima, e a tradição é nossa. Levar a propriedade intelectual, o empreendedorismo e a inovação em saúde para o verso é uma forma de comunicação científica que fala a língua da nossa gente.</p>'+
+  '<p>São três folhetos, que podem ser lidos separadamente: o primeiro ensina a proteger, o segundo a empreender, e o terceiro mostra como a invenção chega ao SUS. Os versos simplificam; ao final de cada folheto, o leitor encontra as leis que os sustentam.</p>'+
+  '<p>Tem uma ideia? Procure o NIT antes de divulgá-la.</p>'+
+  '<div class="empurra"></div>'+
+  '<p class="assina">Núcleo de Inovação Tecnológica da UNCISAL</p>'+
+  '</div></div>';
+}
+
+function htmlContraInterna(){
+  return '<div class="interna"><div class="interna-moldura">'+
+  '<h2>Inteligência artificial e inteligência humana</h2><p class="subt">Como este folheto foi feito</p>'+
+  '<p>Este folheto foi produzido com apoio de inteligência artificial generativa (Claude, da Anthropic), sob a direção do autor.</p>'+
+  '<h3>O que coube à inteligência humana</h3>'+
+  '<ul>'+
+  '<li>Conceber a série, os temas e o público.</li>'+
+  '<li>Definir a forma, o escopo e o acróstico, e aprovar cada etapa antes da redação.</li>'+
+  '<li>Fazer a revisão final do texto e da conformidade jurídica.</li>'+
+  '<li>Responder pelo conteúdo publicado.</li>'+
+  '</ul>'+
+  '<h3>O que coube à inteligência artificial</h3>'+
+  '<ul>'+
+  '<li>Redigir a versão preliminar dos versos a partir das decisões do autor.</li>'+
+  '<li>Verificar métrica e rima.</li>'+
+  '<li>Apoiar a pesquisa e a organização das normas citadas.</li>'+
+  '<li>Esboçar a ilustração da capa e a diagramação digital.</li>'+
+  '</ul>'+
+  '<div class="empurra"></div>'+
+  '<p style="font-size:14px">A inteligência artificial generativa não é autora, e toda a responsabilidade é do autor.</p>'+
+  '</div></div>';
+}
+
+function htmlApendice(m){
+  return '<div class="texto" style="padding-top:46px"><h2>Para saber mais</h2><p class="subt">As leis por trás dos versos</p>'+
+  '<ul>'+
+  '<li><strong>Constituição Federal, arts. 207, 218 e 219:</strong> ensino, pesquisa e extensão indissociáveis e estímulo do Estado à inovação e aos parques tecnológicos.</li>'+
+  '<li><strong>Lei nº 13.267, de 2016:</strong> empresas juniores.</li>'+
+  '<li><strong>Lei nº 10.973, de 2004:</strong> incubadoras, parques tecnológicos, papel do NIT e licença do pesquisador para empreender.</li>'+
+  '<li><strong>Lei Complementar nº 182, de 2021:</strong> marco legal das startups.</li>'+
+  '</ul>'+
+  '<p class="nota" style="margin-bottom:12px">Normas consultadas em novembro de 2026. Confirme sempre a redação vigente.</p>'+
+  '<h2 style="font-size:20px;text-align:left;margin:4px 0 8px;padding-top:12px;border-top:2px solid var(--tinta)">Ficha técnica</h2>'+
+  linhasFicha(true)+
+  '<p style="margin:8px 0 6px"><strong>Como citar</strong></p>'+ htmlCitar()+
+  '<div class="empurra"></div>'+
+  '<div class="folio">'+m+'</div></div>';
+}
+
+function htmlGlossario(m){ return ''; }
+
+function htmlContracapa(){
+  var titulos = [
+    ["Folheto 1","O Curativo de Rita e os Segredos da Propriedade Intelectual"],
+    ["Folheto 2","Joana, a Palmilha e o Caminho do Empreendedor"],
+    ["Folheto 3","O Curativo Chega ao SUS"]
+  ];
+  var h = '<div class="contra"><div class="contra-moldura" style="color:var(--tinta)">';
+  h += '<div style="color:var(--capa)">'+sol(70)+'</div>';
+  h += '<h2>Trilogia Inova UNCISAL</h2><ol>';
+  titulos.forEach(function(t, i){
+    var atual = (i + 1 === NUM_FOLHETO);
+    var miolo = '<small>'+t[0]+(atual ? ' · você leu' : ' · ler agora')+'</small>'+t[1];
+    if (!atual && LINKS[i]) miolo = '<a href="'+LINKS[i]+'">'+miolo+'</a>';
+    h += '<li'+(atual ? ' class="atual"' : '')+'>'+miolo+'</li>';
+  });
+  h += '</ol><div class="empurra"></div>';
+  h += '<p class="nit"><strong>NIT UNCISAL</strong><br>Núcleo de Inovação Tecnológica<br><a href="'+SITE+'" target="_blank" rel="noopener">nit.uncisal.edu.br</a><br><a href="mailto:'+EMAIL+'">'+EMAIL+'</a></p>';
+  h += '<p class="credito">Texto: '+AUTOR+' · Maceió, '+DATA+'<br>Distribuição gratuita</p>';
+  h += '</div></div>';
+  return h;
+}
+
+function htmlPagina(n){
+  var c = PAGINAS[n];
+  if (c.tipo === "capa") return htmlCapa();
+  if (c.tipo === "capaInterna") return htmlCapaInterna();
+  if (c.tipo === "rosto") return htmlRosto();
+  if (c.tipo === "versos") return htmlVersos(n, c);
+  if (c.tipo === "apendice") return htmlApendice(c.m);
+  if (c.tipo === "glossario") return htmlGlossario(c.m);
+  if (c.tipo === "ficha") return htmlFicha(c.m);
+  if (c.tipo === "contraInterna") return htmlContraInterna();
+  return htmlContracapa();
+}
+
+function nomePagina(n){
+  if (n === 1) return "Capa";
+  if (n === 2) return "Capa interna";
+  if (n === N - 1) return "Contracapa interna";
+  if (n === N) return "Contracapa";
+  return "Página " + PAGINAS[n].m;
+}
+
+var cache = {};
+function criarPagina(n, lado){
+  var el = document.createElement("div");
+  if (n < 1 || n > N) { el.className = "pagina em-branco"; return el; }
+  el.className = "pagina" + (PAGINAS[n].cor ? " capa-cor" : "") + (lado ? " " + lado : "");
+  el.setAttribute("role", "group");
+  el.setAttribute("aria-label", nomePagina(n));
+  if (!cache[n]) cache[n] = htmlPagina(n);
+  el.innerHTML = cache[n];
+  return el;
+}
+function folhaEmBranco(lado){
+  var el = document.createElement("div");
+  el.className = "pagina" + (lado ? " " + lado : "");
+  return el;
+}
+
+var livro = document.getElementById("livro");
+var escala = document.getElementById("escala");
+var palco = document.getElementById("palco");
+var vagaEsq = document.getElementById("vagaEsq");
+var vagaDir = document.getElementById("vagaDir");
+var btnAnt = document.getElementById("ant");
+var btnProx = document.getElementById("prox");
+var seletor = document.getElementById("ir");
+var indicador = document.getElementById("indicador");
+var aviso = document.getElementById("aviso");
+
+var semMovimento = false;
+try { semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+
+var dupla = true;
+var pagina = 1;
+var ocupado = false;
+
+for (var i = 1; i <= N; i++) {
+  var op = document.createElement("option");
+  op.value = String(i);
+  op.textContent = nomePagina(i);
+  seletor.appendChild(op);
+}
+
+function decidirModo(){
+  var w = window.innerWidth, h = window.innerHeight;
+  return w >= 900 && w / h > 1.15;
+}
+
+function ajustar(){
+  var r = palco.getBoundingClientRect();
+  var largura = dupla ? 1118 : 559;
+  var s = Math.min((r.width - 24) / largura, (r.height - 20) / 794, 1.35);
+  if (!(s > 0)) s = 0.5;
+  escala.style.width = largura + "px";
+  escala.style.height = "794px";
+  escala.style.transform = "translate(-50%, -50%) scale(" + s + ")";
+}
+
+function par(p){ var s = Math.floor(p / 2); return [2 * s, 2 * s + 1]; }
+
+function colocar(vaga, el){ vaga.innerHTML = ""; vaga.appendChild(el); }
+
+function desenhar(){
+  livro.className = "livro " + (dupla ? "dupla" : "simples");
+  if (dupla) {
+    var pr = par(pagina);
+    colocar(vagaEsq, criarPagina(pr[0], "lado-esq"));
+    colocar(vagaDir, criarPagina(pr[1], "lado-dir"));
+  } else {
+    colocar(vagaDir, criarPagina(pagina, null));
+  }
+  atualizarControles();
+  ajustar();
+}
+
+function textoIndicador(){
+  if (dupla) {
+    var pr = par(pagina), vis = [];
+    if (pr[0] >= 1 && pr[0] <= N) vis.push(pr[0]);
+    if (pr[1] >= 1 && pr[1] <= N) vis.push(pr[1]);
+    if (vis.length === 1) return nomePagina(vis[0]);
+    if (!PAGINAS[vis[0]].cor && !PAGINAS[vis[1]].cor) return "Páginas " + PAGINAS[vis[0]].m + " e " + PAGINAS[vis[1]].m;
+    var b = nomePagina(vis[1]);
+    return nomePagina(vis[0]) + " e " + b.charAt(0).toLowerCase() + b.slice(1);
+  }
+  return nomePagina(pagina);
+}
+
+function atualizarControles(){
+  var primeira, ultima;
+  if (dupla) { var pr = par(pagina); primeira = pr[0] <= 1; ultima = pr[1] >= N; }
+  else { primeira = pagina <= 1; ultima = pagina >= N; }
+  btnAnt.disabled = primeira;
+  btnProx.disabled = ultima;
+  var t = textoIndicador();
+  indicador.textContent = t;
+  aviso.textContent = t;
+  seletor.value = String(pagina);
+  try { history.replaceState(null, "", "#p" + pagina); } catch (e) {}
+  atualizarVozUI();
+}
+
+function animar(folha, de, ate, sombras){
+  if (semMovimento || !folha.animate) return Promise.resolve();
+  var opts = {duration: 720, easing: "cubic-bezier(.45,.05,.2,1)"};
+  sombras.forEach(function(s){
+    s.animate([{opacity:0},{opacity:1},{opacity:0}], opts);
+  });
+  var a = folha.animate([{transform:"rotateY(" + de + "deg)"},{transform:"rotateY(" + ate + "deg)"}], opts);
+  return new Promise(function(res){
+    var feito = false;
+    function fim(){ if (!feito) { feito = true; res(); } }
+    a.onfinish = fim;
+    setTimeout(fim, 900);
+  });
+}
+
+function montarFolha(frenteEl, versoEl, origem, esquerdaPx){
+  var folha = document.createElement("div");
+  folha.className = "folha";
+  folha.style.left = esquerdaPx + "px";
+  folha.style.transformOrigin = origem;
+  var f = document.createElement("div"); f.className = "face frente"; f.appendChild(frenteEl);
+  var v = document.createElement("div"); v.className = "face verso"; v.appendChild(versoEl);
+  var sf = document.createElement("div"); sf.className = "sombra"; f.appendChild(sf);
+  var sv = document.createElement("div"); sv.className = "sombra"; v.appendChild(sv);
+  folha.appendChild(f); folha.appendChild(v);
+  livro.appendChild(folha);
+  return {folha: folha, sombras: [sf, sv]};
+}
+
+function avancar(){
+  if (ocupado) return Promise.resolve();
+  if (dupla) {
+    var pr = par(pagina);
+    if (pr[1] >= N) return Promise.resolve();
+    ocupado = true;
+    var novoEsq = pr[0] + 2, novoDir = pr[1] + 2;
+    colocar(vagaDir, criarPagina(novoDir, "lado-dir"));
+    var m = montarFolha(criarPagina(pr[1], "lado-dir"), criarPagina(novoEsq, "lado-esq"), "left center", 559);
+    return animar(m.folha, 0, -180, m.sombras).then(function(){
+      colocar(vagaEsq, criarPagina(novoEsq, "lado-esq"));
+      m.folha.remove();
+      pagina = novoEsq; ocupado = false; atualizarControles();
+    });
+  } else {
+    if (pagina >= N) return Promise.resolve();
+    ocupado = true;
+    var atual = pagina;
+    colocar(vagaDir, criarPagina(atual + 1, null));
+    var m2 = montarFolha(criarPagina(atual, null), folhaEmBranco(null), "left center", 0);
+    return animar(m2.folha, 0, -180, m2.sombras).then(function(){
+      m2.folha.remove();
+      pagina = atual + 1; ocupado = false; atualizarControles();
+    });
+  }
+}
+
+function voltar(){
+  if (ocupado) return;
+  if (dupla) {
+    var pr = par(pagina);
+    if (pr[0] <= 1) return;
+    ocupado = true;
+    var novoEsq = pr[0] - 2, novoDir = pr[1] - 2;
+    colocar(vagaEsq, criarPagina(novoEsq, "lado-esq"));
+    var m = montarFolha(criarPagina(pr[0], "lado-esq"), criarPagina(novoDir, "lado-dir"), "right center", 0);
+    animar(m.folha, 0, 180, m.sombras).then(function(){
+      colocar(vagaDir, criarPagina(novoDir, "lado-dir"));
+      m.folha.remove();
+      pagina = Math.max(1, novoEsq); ocupado = false; atualizarControles();
+    });
+  } else {
+    if (pagina <= 1) return;
+    ocupado = true;
+    var anterior = pagina - 1;
+    var m2 = montarFolha(criarPagina(anterior, null), folhaEmBranco(null), "left center", 0);
+    m2.folha.style.transform = "rotateY(-180deg)";
+    animar(m2.folha, -180, 0, m2.sombras).then(function(){
+      colocar(vagaDir, criarPagina(anterior, null));
+      m2.folha.remove();
+      pagina = anterior; ocupado = false; atualizarControles();
+    });
+  }
+}
+
+function irPara(n){
+  if (ocupado) return;
+  n = Math.max(1, Math.min(N, n));
+  pagina = dupla ? Math.max(1, par(n)[0]) : n;
+  if (dupla && n === 1) pagina = 1;
+  desenhar();
+}
+
+btnProx.addEventListener("click", function(){ pararVoz(); avancar(); });
+btnAnt.addEventListener("click", function(){ pararVoz(); voltar(); });
+seletor.addEventListener("change", function(){ pararVoz(); irPara(parseInt(seletor.value, 10)); });
+
+livro.addEventListener("click", function(ev){
+  if (ev.target.closest && ev.target.closest("a")) return;
+  if (window.getSelection && String(window.getSelection()).length > 0) return;
+  pararVoz();
+  var r = livro.getBoundingClientRect();
+  if (ev.clientX - r.left > r.width / 2) avancar(); else voltar();
+});
+
+document.addEventListener("keydown", function(ev){
+  if (ev.target && ev.target.tagName === "SELECT") return;
+  if (ev.key === "ArrowRight" || ev.key === "PageDown") { ev.preventDefault(); pararVoz(); avancar(); }
+  else if (ev.key === "ArrowLeft" || ev.key === "PageUp") { ev.preventDefault(); pararVoz(); voltar(); }
+  else if (ev.key === "Home") { ev.preventDefault(); pararVoz(); irPara(1); }
+  else if (ev.key === "End") { ev.preventDefault(); pararVoz(); irPara(N); }
+});
+
+var toqueX = null, toqueY = null;
+palco.addEventListener("touchstart", function(ev){
+  if (ev.touches.length !== 1) { toqueX = null; return; }
+  toqueX = ev.touches[0].clientX; toqueY = ev.touches[0].clientY;
+}, {passive: true});
+palco.addEventListener("touchend", function(ev){
+  if (toqueX === null) return;
+  var dx = ev.changedTouches[0].clientX - toqueX;
+  var dy = ev.changedTouches[0].clientY - toqueY;
+  toqueX = null;
+  if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+    ev.preventDefault();
+    pararVoz();
+    if (dx < 0) avancar(); else voltar();
+  }
+});
+
+var tempo = null;
+window.addEventListener("resize", function(){
+  clearTimeout(tempo);
+  tempo = setTimeout(function(){
+    var novo = decidirModo();
+    if (novo !== dupla && !ocupado) {
+      dupla = novo;
+      if (dupla) pagina = Math.max(1, par(pagina)[0]);
+      desenhar();
+    } else { ajustar(); }
+  }, 120);
+});
+
+/* ===== Declamação =====
+   Hoje: voz sintética do aparelho, verso a verso, com destaque da estrofe.
+   Depois: quando as gravações do autor chegarem, GRAVACOES[páginaDoMiolo] apontará para o arquivo
+   de áudio de cada página, e a voz sintética ficará só onde faltar gravação. */
+var GRAVACOES = {};
+var sintese = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+var barraVoz = document.getElementById("declamar");
+var btnOuvirPag = document.getElementById("ouvirPag");
+var btnOuvirTudo = document.getElementById("ouvirTudo");
+var btnPararVoz = document.getElementById("pararVoz");
+var selVeloc = document.getElementById("veloc");
+var chipVoz = document.getElementById("chipVoz");
+var semVoz = document.getElementById("semVoz");
+var voz = null;
+var declamando = false;
+var fila = [];
+var posicao = 0;
+var modoVoz = "pagina";
+
+var PRONUNCIA = [
+  [/\bUNCISAL\b/g, "Uncisál"],
+  [/\bINPI\b/g, "ínpi"],
+  [/\bNIT\b/g, "nít"],
+  [/\bICT\b/g, "i cê tê"],
+  [/\bstartup\b/gi, "startâp"]
+];
+
+function prepararFala(linha){
+  var t = linha.replace(/[“”"]/g, "");
+  PRONUNCIA.forEach(function(p){ t = t.replace(p[0], p[1]); });
+  if (!/[,.;:!?]$/.test(t)) t += ",";
+  return t;
+}
+
+function escolherVoz(){
+  if (!sintese) return;
+  var vs = sintese.getVoices() || [];
+  if (!vs.length) return;
+  var br = vs.filter(function(v){ return /^pt[-_]BR/i.test(v.lang); });
+  var pt = br.length ? br : vs.filter(function(v){ return /^pt/i.test(v.lang); });
+  if (!pt.length) {
+    voz = null;
+    semVoz.textContent = "Não encontramos voz em português neste aparelho. No iPhone, em geral ela se instala em Ajustes, Acessibilidade, Conteúdo Falado, Vozes.";
+    semVoz.hidden = false;
+    return;
+  }
+  var preferidas = /(Google|Luciana|Francisca|Thalita|Felipe|Natural|Neural)/i;
+  voz = pt.filter(function(v){ return preferidas.test(v.name); })[0] || pt[0];
+  semVoz.hidden = true;
+}
+
+function paginasVisiveis(){
+  if (dupla) { var pr = par(pagina); return [pr[0], pr[1]].filter(function(n){ return n >= 1 && n <= N; }); }
+  return [pagina];
+}
+function ehVerso(n){ return PAGINAS[n] && PAGINAS[n].tipo === "versos"; }
+var PAGINAS_VERSO = [];
+for (var pv = 1; pv <= N; pv++) { if (ehVerso(pv)) PAGINAS_VERSO.push(pv); }
+
+function atualizarVozUI(){
+  if (!btnOuvirPag) return;
+  btnOuvirPag.disabled = !paginasVisiveis().some(ehVerso);
+  btnOuvirPag.hidden = declamando;
+  btnOuvirTudo.hidden = declamando;
+  btnPararVoz.hidden = !declamando;
+  chipVoz.hidden = !declamando;
+}
+
+function montarFila(paginas, comTitulo){
+  var f = [];
+  if (comTitulo) f.push({n: paginas[0], e: null, l: null, texto: TITULO_FALA});
+  paginas.forEach(function(n){
+    PAGINAS[n].estrofes.forEach(function(e){
+      E[e].split("\n").forEach(function(linha, li){ f.push({n: n, e: e, l: li, texto: prepararFala(linha)}); });
+    });
+  });
+  return f;
+}
+
+function limparDestaque(){
+  Array.prototype.forEach.call(livro.querySelectorAll(".estrofe.lendo"), function(el){ el.classList.remove("lendo"); });
+  Array.prototype.forEach.call(livro.querySelectorAll(".v.atual"), function(el){ el.classList.remove("atual"); });
+}
+function destacar(item){
+  limparDestaque();
+  if (item.e === null) return;
+  var est = livro.querySelector('.vaga .estrofe[data-e="' + item.e + '"]');
+  if (!est) return;
+  est.classList.add("lendo");
+  var v = est.querySelector('.v[data-l="' + item.l + '"]');
+  if (v) v.classList.add("atual");
+}
+
+function garantirVisivel(n){
+  if (paginasVisiveis().indexOf(n) >= 0) return Promise.resolve();
+  var vis = paginasVisiveis();
+  if (modoVoz === "folheto" && n === vis[vis.length - 1] + 1) return avancar();
+  irPara(n);
+  return Promise.resolve();
+}
+
+function falarProximo(){
+  if (!declamando) return;
+  if (posicao >= fila.length) { pararVoz(); aviso.textContent = "Declamação concluída"; return; }
+  var item = fila[posicao];
+  garantirVisivel(item.n).then(function(){
+    if (!declamando) return;
+    destacar(item);
+    var u = new SpeechSynthesisUtterance(item.texto);
+    u.lang = "pt-BR";
+    if (voz) u.voice = voz;
+    u.rate = parseFloat(selVeloc.value) || 0.92;
+    u.onend = function(){
+      if (!declamando) return;
+      posicao++;
+      var pausa = (item.l === null || item.l === 5) ? 520 : 90;
+      setTimeout(falarProximo, pausa);
+    };
+    u.onerror = function(ev){
+      if (ev && (ev.error === "interrupted" || ev.error === "canceled")) return;
+      pararVoz();
+      semVoz.textContent = "A declamação não pôde ser iniciada neste navegador.";
+      semVoz.hidden = false;
+    };
+    sintese.speak(u);
+  });
+}
+
+function iniciarVoz(modo){
+  if (!sintese) return;
+  sintese.cancel();
+  try { sintese.speak(new SpeechSynthesisUtterance("")); } catch (e) {}
+  escolherVoz();
+  modoVoz = modo;
+  var paginas, comTitulo = false;
+  if (modo === "pagina") {
+    paginas = paginasVisiveis().filter(ehVerso);
+    if (!paginas.length) return;
+  } else {
+    var visVerso = paginasVisiveis().filter(ehVerso);
+    var inicio = visVerso.length ? visVerso[0] : PAGINAS_VERSO[0];
+    paginas = PAGINAS_VERSO.filter(function(n){ return n >= inicio; });
+    comTitulo = (inicio === PAGINAS_VERSO[0]);
+  }
+  fila = montarFila(paginas, comTitulo);
+  posicao = 0;
+  declamando = true;
+  atualizarVozUI();
+  aviso.textContent = modo === "pagina" ? "Declamando a página" : "Declamando o folheto";
+  falarProximo();
+}
+
+function pararVoz(){
+  if (!declamando) return;
+  declamando = false;
+  if (sintese) sintese.cancel();
+  limparDestaque();
+  atualizarVozUI();
+}
+
+if (sintese) {
+  barraVoz.hidden = false;
+  escolherVoz();
+  if ("onvoiceschanged" in sintese) sintese.onvoiceschanged = escolherVoz;
+  btnOuvirPag.addEventListener("click", function(){ iniciarVoz("pagina"); });
+  btnOuvirTudo.addEventListener("click", function(){ iniciarVoz("folheto"); });
+  btnPararVoz.addEventListener("click", pararVoz);
+} else {
+  semVoz.textContent = "Este navegador não oferece declamação por voz sintética.";
+  semVoz.hidden = false;
+}
+
+function lerHash(){
+  var m = /^#p(\d+)$/.exec(location.hash || "");
+  return m ? parseInt(m[1], 10) : 1;
+}
+
+dupla = decidirModo();
+var pedeOuvir = (location.hash === "#ouvir");
+var inicial = pedeOuvir ? PAGINAS_VERSO[0] : Math.max(1, Math.min(N, lerHash()));
+pagina = dupla ? Math.max(1, par(inicial)[0]) : inicial;
+desenhar();
+if (pedeOuvir && sintese) {
+  btnOuvirTudo.classList.add("pulsa");
+  semVoz.textContent = "Toque em Ouvir folheto para começar a declamação.";
+  semVoz.hidden = false;
+  try { btnOuvirTudo.focus(); } catch (e) {}
+  btnOuvirTudo.addEventListener("click", function(){ btnOuvirTudo.classList.remove("pulsa"); semVoz.hidden = true; }, {once: true});
+}
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ajustar); }
+})();
+</script>
+</body>
+</html>
